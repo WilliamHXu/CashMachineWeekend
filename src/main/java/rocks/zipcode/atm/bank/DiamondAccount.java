@@ -3,11 +3,11 @@ package rocks.zipcode.atm.bank;
 /**
  * @author ZipCodeWilmington
  */
-public class PremiumAccount extends Account {
+public class DiamondAccount extends Account {
 
-    private static final Double OVERDRAFT_LIMIT = 100.00;
+    private static final Double OVERDRAFT_LIMIT = 500.00;
 
-    public PremiumAccount(AccountData accountData) {
+    public DiamondAccount(AccountData accountData) {
         super(accountData);
     }
 
