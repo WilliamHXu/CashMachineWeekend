@@ -34,15 +34,22 @@ public final class AccountData {
         return balance;
     }
 
-    @Override
-    public String toString() {
-        String printOut = "Account id: " + id + '\n' +
-                "Name: " + name + '\n' +
-                "Email: " + email + '\n' +
-                "Balance: " + String.format("%.2d", balance);
+
+    public String toStringMessage() {
+        String printOut = "";
         if (balance < 0.0){
-            printOut += "\n ACCOUNT IS OVERDRAWN BY " + (String.format("%.2d", -balance));
+            printOut += "\n ACCOUNT IS OVERDRAWN BY " + (String.format("%.2f", -balance));
         }
         return printOut;
+    }
+
+    public String toStringAccountInfo() {
+        return "Account id: " + id +
+                " Name: " + name +
+                " Email: " + email + '\n';
+    }
+
+    public String toStringBalance() {
+        return "Balance: " + String.format("%.2f", balance);
     }
 }

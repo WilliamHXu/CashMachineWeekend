@@ -17,7 +17,11 @@ import javafx.scene.layout.FlowPane;
 public class CashMachineApp extends Application {
 
     private TextField field = new TextField();
+    private TextField accountIDField = new TextField();
+    private TextField balanceField = new TextField();
+    private TextField messageField = new TextField();
     private CashMachine cashMachine = new CashMachine(new Bank());
+    private boolean loggedIn = false;
 
     private Parent createContent() {
         VBox vbox = new VBox(10);
@@ -25,44 +29,53 @@ public class CashMachineApp extends Application {
 
         TextArea areaInfo = new TextArea();
 
-        Button btnSubmit = new Button("Set Account ID");
-        btnSubmit.setOnAction(e -> {
-            int id = Integer.parseInt(field.getText());
-            cashMachine.login(id);
 
-            areaInfo.setText(cashMachine.toString());
-        });
 
         Button btnDeposit = new Button("Deposit");
+        btnDeposit.setDisable(!loggedIn);
         btnDeposit.setOnAction(e -> {
             Double amount = Double.parseDouble(field.getText());
             cashMachine.deposit(amount);
 
-            areaInfo.setText(cashMachine.toString());
+            balanceField.setText(cashMachine.toStringBalance());
         });
 
         Button btnWithdraw = new Button("Withdraw");
+        btnWithdraw.setDisable(!loggedIn);
         btnWithdraw.setOnAction(e -> {
             Double amount = Double.parseDouble(field.getText());
             cashMachine.withdraw(amount);
 
-            areaInfo.setText(cashMachine.toString());
+            balanceField.setText(cashMachine.toStringBalance());
+            messageField.setText(cashMachine.toStringMessage());
         });
 
         Button btnExit = new Button("Exit");
+        btnExit.setDisable(!loggedIn);
         btnExit.setOnAction(e -> {
+            loggedIn = false;
             cashMachine.exit();
 
-            areaInfo.setText(cashMachine.toString());
         });
 
+        Button btnSubmit = new Button("Login");
+        btnSubmit.setOnAction(e -> {
+            int id = Integer.parseInt(field.getText());
+            cashMachine.login(id);
+            loggedIn = true;
+            btnDeposit.setDisable(!loggedIn);
+            btnWithdraw.setDisable(!loggedIn);
+            btnExit.setDisable(!loggedIn);
+
+            accountIDField.setText(cashMachine.toStringAccountInfo());
+        });
         FlowPane flowpane = new FlowPane();
 
         flowpane.getChildren().add(btnSubmit);
         flowpane.getChildren().add(btnDeposit);
         flowpane.getChildren().add(btnWithdraw);
         flowpane.getChildren().add(btnExit);
-        vbox.getChildren().addAll(field, flowpane, areaInfo);
+        vbox.getChildren().addAll(field, flowpane, accountIDField, balanceField, messageField, areaInfo);
         return vbox;
     }
 
